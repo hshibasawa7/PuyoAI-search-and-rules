@@ -26,7 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class captureScreen {
+public class CaptureScreen {
     private BufferedImage image;
     private Rectangle bounds;
     private JFrame frame = null;
@@ -48,7 +48,7 @@ public class captureScreen {
 	int screenW = 512;
 	int screenH = 478 + 22;//content and title bar
 
-	captureScreen Screen = new captureScreen("puyo", screenW, screenH);
+	CaptureScreen Screen = new CaptureScreen("puyo", screenW, screenH);
 
 	RepeatTask task = new RepeatTask(Screen);
 	Timer timer = new Timer(true);
@@ -57,8 +57,8 @@ public class captureScreen {
     }
 
     //コンストラクタ
-    public captureScreen() {}
-    public captureScreen(int cw, int ch) {
+    public CaptureScreen() {}
+    public CaptureScreen(int cw, int ch) {
 	if(cw <= 0 || ch <= 0) {
 	    System.out.println("invalid number( <= 0 )");
 	    return;
@@ -67,7 +67,7 @@ public class captureScreen {
 	this.ch = ch;
     }
     
-    public captureScreen(int cx, int cy, int cw, int ch) {
+    public CaptureScreen(int cx, int cy, int cw, int ch) {
 	if(cx <= 0 || cy <= 0 || cw <= 0 || ch <= 0) {
 	    System.out.println("invalid number( <= 0 )");
 	    return;
@@ -78,10 +78,10 @@ public class captureScreen {
 	this.ch = ch;
     }
     
-    public captureScreen(String filename) {
+    public CaptureScreen(String filename) {
 	this.filename = filename;
     }
-    public captureScreen(String filename, int cw, int ch) {
+    public CaptureScreen(String filename, int cw, int ch) {
 	if(cw <= 0 || ch <= 0) {
 	    System.out.println("invalid number( <= 0 )");
 	    return;
@@ -91,7 +91,7 @@ public class captureScreen {
 	this.filename = filename;
     }
     
-    public captureScreen(String filename, int cx, int cy, int cw, int ch) {
+    public CaptureScreen(String filename, int cx, int cy, int cw, int ch) {
 	if(cx <= 0 || cy <= 0 || cw <= 0 || ch <= 0) {
 	    System.out.println("invalid number( <= 0 )");
 	    return;
@@ -159,10 +159,10 @@ public class captureScreen {
 }
 
 class RepeatTask extends TimerTask {
-    private captureScreen cs;
+    private CaptureScreen cs;
     private Times times;
 
-    public RepeatTask(captureScreen cs) {
+    public RepeatTask(CaptureScreen cs) {
 	this.cs = cs;
 	times = new Times();
     }
