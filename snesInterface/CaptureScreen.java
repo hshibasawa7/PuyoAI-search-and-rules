@@ -51,7 +51,7 @@ public class CaptureScreen {
 	CaptureScreen Screen = new CaptureScreen("puyo", screenW, screenH);
 
 	RepeatTask task = new RepeatTask(Screen);
-	Timer timer = new Timer(true);
+	Timer timer = new Timer();
 	timer.schedule(task, 0, 5000);
 
     }
@@ -154,6 +154,20 @@ public class CaptureScreen {
 	frame.getContentPane().add(label);
 
 	frame.setVisible(true);
+    }
+
+    public BufferedImage getImage() {
+	return image;
+    }
+    public BufferedImage getImage(int[] c) {
+	if(c.length < 4) {
+	    System.out.println("invalid array. (length < 4)");
+	    return image.getSubimage(0,0,0,0);
+	}
+	return image.getSubimage(c[0], c[1], c[2], c[3]);
+    }
+    public BufferedImage getImage(int x, int y, int w, int h) {
+	return image.getSubimage(x, y, w, h);
     }
 
 }
