@@ -125,6 +125,46 @@ public class Score {
 	return c;
     }
 
+        public static int setConnectMask(int[][] field, boolean[][] mask, int x_idx, int y_idx) {
+	if(y_idx < 0 || Field.MAX_VISUAL_HEIGHT <= y_idx) { return 0; }
+	if(x_idx < 0 || Field.MAX_WIDTH <= x_idx) { return 0; }
+	
+	int color = field[y_idx][x_idx];
+	if(color == PuyoColor.EMPTY) { return 0; }
+	if(color == PuyoColor.OJAMA) { return 0; }
+	
+	if(mask[y_idx][x_idx]) { return 0; }
+	mask[y_idx][x_idx] = true;
+	
+	int c = 1;
+	c += setConnectMask(field, mask, x_idx - 1, y_idx, color);
+	c += setConnectMask(field, mask, x_idx + 1, y_idx, color);
+	c += setConnectMask(field, mask, x_idx, y_idx - 1, color);
+	c += setConnectMask(field, mask, x_idx, y_idx + 1, color);
+	return c;
+    }
+
+    public static int setConnectMask(int[][] field, boolean[][] mask, int x_idx, int y_idx, int color ) {
+	if(y_idx < 0 || Field.MAX_VISUAL_HEIGHT <= y_idx) { return 0; }
+	if(x_idx < 0 || Field.MAX_WIDTH <= x_idx) { return 0; }
+
+	if(field[y_idx][x_idx] == PuyoColor.OJAMA) {
+	    //mask[y_idx][x_idx] = -1;
+	    return 0;
+	}
+	if(color != field[y_idx][x_idx]) { return 0; }
+
+	if(mask[y_idx][x_idx]) { return 0; }
+	mask[y_idx][x_idx] = true;
+
+	int c = 1;
+	c += setConnectMask(field, mask, x_idx - 1, y_idx, color);
+	c += setConnectMask(field, mask, x_idx + 1, y_idx, color);
+	c += setConnectMask(field, mask, x_idx, y_idx - 1, color);
+	c += setConnectMask(field, mask, x_idx, y_idx + 1, color);
+	return c;
+    }
+
     public static int getMaskCount(int[][] mask) {
 	int count = 0;
 	for(int i = 0; i < Field.MAX_VISUAL_HEIGHT; i++) {

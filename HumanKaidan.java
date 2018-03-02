@@ -82,18 +82,20 @@ public class HumanKaidan {
 	    boolean gameOver = false;
 	    while(!gameOver) {
 		cnt_moves++;
+		int waitCounter = 0;//発火時アウト
 		while(true) {
 		    if ( ioface.waitPuyoGiven(stat.player, stat.thisTsumo, stat.nextTsumo, stat.nxnxTsumo) ) {
 			stat.addColorVari();
 			break;
 		    }
 		    //死亡判定
-		    if (ioface.isFieldEmpty(stat.player) && !stat.allClear) {
+		    if (ioface.isFieldEmpty(stat.player) && !stat.allClear ||
+			waitCounter > 10) {
 			gameOver = true;
 			System.out.println("Game Over!!");
 			break;
 		    }
-
+		    //44waitCounter++;
 		}
 		if(gameOver) { break; }
 		
@@ -119,7 +121,8 @@ public class HumanKaidan {
 		
 		System.out.println("score: " + score[0] + " ");
 		if (score[0] < 0) {
-		    return;
+		    gameOver = true;
+		    break;
 		}
 		System.out.println("("+col[0]+","+row[0]+"), ("+col[1]+","+row[1]+")");
 		

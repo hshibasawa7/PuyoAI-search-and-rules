@@ -91,12 +91,37 @@ public class Field {
 		if (data[i][j] < 0) {
 		    System.out.print(" -");
 		} else {
-		    System.out.print(" " + data[i][j]);
+		    switch(data[i][j]) {
+		    case 0:
+			System.out.print(" \u001b[00;37m0");
+			break;
+		    case 1:
+			System.out.print(" \u001b[00;31m1");
+			break;
+		    case 2:
+			System.out.print(" \u001b[00;36m2");
+			break;
+		    case 3:
+			System.out.print(" \u001b[00;32m3");
+			break;
+		    case 4:
+			System.out.print(" \u001b[00;34m4");
+			break;
+		    case 5:
+			System.out.print(" \u001b[00;33m5");
+			break;
+		    case 6:
+			System.out.print(" \u001b[00;90m6");
+			break;
+		    default:
+			System.out.print(" \u001b[00m" + data[i][j]);
+			break;
+		    }
 		}
 	    }
 	    System.out.println();
 	}
-	System.out.println();
+	System.out.println("\u001b[00m");
     }
 
     public static int getPuyoNum(int[][] data) {

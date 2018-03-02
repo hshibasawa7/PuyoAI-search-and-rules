@@ -1,9 +1,12 @@
 import SnesInterface.*;
 import GlobalFunc.Field;
 
-public class PlayerStat {
+public class PlayerStat implements Cloneable {
     public int player = 0;
     public int[][] field;
+    //public int[] height;
+
+    //todo: change into future tsumo list
     public int[] thisTsumo = new int[2];
     public int[] nextTsumo = new int[2];
     public int[] nxnxTsumo = new int[2];
@@ -11,6 +14,8 @@ public class PlayerStat {
 
     public boolean allClear = true;
     public int score;
+    //public boolean deleting = false;
+
 
     public PlayerStat() {
 	field = new int[Field.MAX_HEIGHT][];
@@ -38,6 +43,31 @@ public class PlayerStat {
 	this.player = player;
     }
 
+    public PlayerStat clone() {
+	PlayerStat newStat = null;
+	try {
+	    newStat = (PlayerStat)super.clone();
+	} catch(CloneNotSupportedException e) {
+	    System.err.println(e);
+	    throw new RuntimeException();
+	}
+	newStat.field = Field.copyField(this.field);
+
+	newStat.thisTsumo = new int[2];
+	newStat.nextTsumo = new int[2];
+	newStat.nxnxTsumo = new int[2];
+	for(int i = 0; i < 2; i++) {
+	    newStat.thisTsumo[i] = this.thisTsumo[i];
+	    newStat.nextTsumo[i] = this.nextTsumo[i];
+	    newStat.nxnxTsumo[i] = this.nxnxTsumo[i];
+	}
+
+	newStat.colorVariation = new boolean[PuyoColor.MAX_NUM];
+	for (int i = 0; i < PuyoColor.MAX_NUM; i++) {
+	    newStat.colorVariation[i] = this.colorVariation[i];
+	}
+	return newStat;
+    }
 
     public void setColorVari(int[] tsumo) {
 	colorVariation[tsumo[0]] = true;
@@ -56,6 +86,32 @@ public class PlayerStat {
 	if (colorVariation[PuyoColor.PURPLE]) { cnt++; }
 	return cnt;
     }
+    public int[] getColorList() {
+	int[] colorList = new int[this.getNumColor()];
+	int idx = 0;
+	if(colorVariation[PuyoColor.RED]) {
+	    colorList[idx] = PuyoColor.RED;
+	    idx++;
+	}
+	if(colorVariation[PuyoColor.BLUE]) {
+	    colorList[idx] = PuyoColor.BLUE;
+	    idx++;
+	}
+	if(colorVariation[PuyoColor.YELLOW]) {
+	    colorList[idx] = PuyoColor.YELLOW;
+	    idx++;
+	}
+	if(colorVariation[PuyoColor.GREEN]) {
+	    colorList[idx] = PuyoColor.GREEN;
+	    idx++;
+	}
+	if(colorVariation[PuyoColor.PURPLE]) {
+	    colorList[idx] = PuyoColor.PURPLE;
+	    idx++;
+	}
+	return colorList;
+    }
+
     public void setPuyo2Field(int[] col, int[] row) {
 	field[row[0]][col[0]] = thisTsumo[0];
 	field[row[1]][col[1]] = thisTsumo[1];

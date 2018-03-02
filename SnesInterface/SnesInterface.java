@@ -600,7 +600,7 @@ public class SnesInterface {
 	return true;
     }
 
-
+    //Todo: capsule
     public boolean OneButton(int key) {
 	//移動は2フレーム
 	try {
@@ -613,6 +613,7 @@ public class SnesInterface {
 	}
 	return true;
     }
+
     public void DownStart() {
 	try {
 	    robot.keyPress(snesKeyCode.DOWN);

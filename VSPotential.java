@@ -17,11 +17,18 @@ public class VSPotential {
     public static void main(String args[]) {
 	int depth = 3;
 	int threshold = 2100;
+	int player = 0;
+	if (args.length > 0) {
+	    player = Integer.parseInt(args[0]) - 1;
+	    if (player < 0 || 1 < player ) {
+		System.err.println("invalid number of player inputed.");
+	    }
+	}
 
 	while(true) {
-	    PlayerStat stat = new PlayerStat();
+	    PlayerStat stat = null;
 	    VSPotential ai = new VSPotential();
-	    SnesInterface ioface = new SnesInterface(stat.player);
+	    SnesInterface ioface = new SnesInterface(player);
 	/*robotの生成時、threadがアクティブ化（初回のみ？）
 	  snes9xが停止するため要対策
 	*/
@@ -34,9 +41,9 @@ public class VSPotential {
 
 	    if (ioface.waitSelectLevel()) {
 		System.out.println("Ready");
-		ioface.OneButton(SnesKeyCode.ROT_R);
+		ioface.OneButton(ioface.snesKeyCode.ROT_R);
 	    }
-	    stat = new PlayerStat( new int[2], ioface.getNextPuyo()[stat.player], ioface.getNxnxPuyo()[stat.player]);
+	    stat = new PlayerStat( new int[2], ioface.getNextPuyo()[player], ioface.getNxnxPuyo()[player], player);
 	    
 	    /*
 	try {
@@ -52,13 +59,15 @@ public class VSPotential {
 	    int nxnx[] = new int[2];
 	    boolean gameOver = false;
 	    while(!gameOver) {
+		int waitCounter = 0;
 		while(true) {
 		    if ( ioface.waitPuyoGiven(stat.player, stat.thisTsumo, stat.nextTsumo, stat.nxnxTsumo) ) {
 			stat.addColorVari();
 			break;
 		    }
 		    //死亡判定
-		    if (ioface.isFieldEmpty(stat.player) && !stat.allClear) {
+		    if (ioface.isFieldEmpty(stat.player) && !stat.allClear ||
+			waitCounter > 10) {
 			gameOver = true;
 			System.out.println("Game Over!!");
 			break;
@@ -70,6 +79,7 @@ public class VSPotential {
 			throw new RuntimeException(e);
 		    }
 		    */
+		    waitCounter++;			
 		}
 		if(gameOver) { break; }
 		
@@ -91,7 +101,8 @@ public class VSPotential {
 		
 		System.out.println("score: " + score[0] + " ");
 		if (score[0] < 0) {
-		    return;
+		    gameOver = true;
+		    break;
 		}
 		System.out.println("("+col[0]+","+row[0]+"), ("+col[1]+","+row[1]+")");
 		
